@@ -1,0 +1,38 @@
+<!DOCTYPE>
+<html>
+<head>
+	<script src='js/jquery-2.1.1.min.js'></script>
+</head>
+<body>
+	<script>
+		document.write('<h1>' + new Date().toLocaleTimeString() + '</h1>');
+	</script>
+	<h1>Some Pagelets:</h1>
+
+	<h1 id='pagelet0'>Waiting...</h1>
+	<h1 id='pagelet1'>Waiting...</h1>
+	<h1 id='pagelet2'>Waiting...</h1>
+	<h1 id='pagelet3'>Waiting...</h1>
+	<h1 id='pagelet4'>Waiting...</h1>
+	<h1 id='pagelet5'>Waiting...</h1>
+	<h1 id='pagelet6'>Waiting...</h1>
+	<h1 id='pagelet7'>Waiting...</h1>
+	<h1 id='pagelet8'>Waiting...</h1>
+	<h1 id='pagelet9'>Waiting...</h1>
+
+	<script>
+		function fillPagelet(id) { 
+			$.ajax({
+				  url: "/content/" + id,
+				  success: function(content) {
+				    $( "#pagelet" + id ).html(content + ' @ '+ new Date().toLocaleTimeString());
+				  }
+				});
+		}
+
+		for (pageletId = 0; pageletId < 10; pageletId++) {
+			fillPagelet(pageletId);
+		}
+	</script>
+</body>
+</html>
