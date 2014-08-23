@@ -34,7 +34,9 @@ public class BigPipeServlet extends HttpServlet {
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
-		this.executorService = Executors.newFixedThreadPool(100);
+		// The thread pool size has a huge impact on BigPipe performance
+		// Not sure how to handle this pool for multiple Servlets
+		this.executorService = Executors.newFixedThreadPool(10);
 	}
 
 	@Override
