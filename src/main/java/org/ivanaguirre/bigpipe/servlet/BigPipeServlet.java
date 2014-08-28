@@ -29,8 +29,6 @@ public class BigPipeServlet extends HttpServlet {
 
 	private ExecutorService executorService;
 
-	private PageletContentService pageletContentService = new PageletContentService();
-
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
@@ -71,7 +69,7 @@ public class BigPipeServlet extends HttpServlet {
 
 		Collection<Callable<Void>> tasks = new ArrayList<>();
 		for (int pageletId = 0; pageletId < MAX_PAGELETS; pageletId++) {
-			tasks.add(new Pagelet(pageletId, writer));
+			tasks.add(new PageletTask(pageletId, writer));
 		}
 
 		try {
@@ -98,30 +96,5 @@ public class BigPipeServlet extends HttpServlet {
 		writer.write("<head>");
 		writer.write("<script src='js/jquery-2.1.1.min.js'></script>");
 		writer.write("</head>");
-	}
-
-	private class Pagelet implements Callable<Void> {
-		private int id;
-		private PrintWriter writer;
-		
-		private Pagelet(int id, PrintWriter writer) {
-			this.id = id;
-			this.writer = writer;
-		}
-
-		@Override
-		public Void call() throws Exception {
-			StringBuffer buffer = new StringBuffer();
-			buffer.append("<script>");
-
-			buffer.append("$('#pagelet" + this.id + "').html('"
-					+ pageletContentService.getContent(this.id)
-					+ " @ ' +  new Date().toLocaleTimeString() )");
-
-			buffer.append("</script>");
-			writer.write(buffer.toString());
-			writer.flush();
-			return null;
-		}
 	}
 }
